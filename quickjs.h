@@ -223,6 +223,14 @@ typedef struct JSValue {
     int64_t tag;
 } JSValue;
 
+inline JSValue JSValueMake(int64_t tag, int64_t val)
+{
+    JSValue v;
+    v.tag = tag;
+    v.u.int32 = val;
+    return v;
+}
+
 #define JSValueConst JSValue
 #define JS_VALUE_CONST_CAST(v) (v)
 
@@ -234,7 +242,7 @@ typedef struct JSValue {
 #define JS_VALUE_GET_FLOAT64(v) ((v).u.float64)
 #define JS_VALUE_GET_PTR(v) ((v).u.ptr)
 
-#define JS_MKVAL(tag, val) (JSValue){ (JSValueUnion){ .int32 = val }, tag }
+#define JS_MKVAL(tag, val) JSValueMake(tag,val)
 #define JS_MKPTR(tag, p) (JSValue){ (JSValueUnion){ .ptr64 = (uint64_t)p }, tag }
 
 #define JS_TAG_IS_FLOAT64(tag) ((unsigned)(tag) == JS_TAG_FLOAT64)
